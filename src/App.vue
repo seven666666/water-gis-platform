@@ -56,9 +56,7 @@ const initCesium = () => {
   cesiumViewer.value = new Cesium.Viewer('cesiumContainer', {
     // 使用高德地图作为底图
     imageryProvider: amapImageryProvider,
-    // 禁用所有可能需要 Ion 的功能
-    terrain: false,
-    terrainProvider: undefined,
+    // 移除 terrain 配置以兼容 cesium 1.104
     baseLayerPicker: false,
     geocoder: false,
     homeButton: false,
@@ -75,9 +73,14 @@ const initCesium = () => {
     shouldAnimate: false
   })
   
-  // 禁用场景的某些自动加载
-  cesiumViewer.value.scene.globe.showGroundAtmosphere = false
-  cesiumViewer.value.scene.globe.enableLighting = false
+  // 禁用 globe 的所有 Ion 服务
+  const globe = cesiumViewer.value.scene.globe
+  globe.showGroundAtmosphere = false
+  globe.enableLighting = false
+  globe.depthTestAgainstTerrain = false
+  cesiumViewer.value.scene.skyBox.show = false
+  cesiumViewer.value.scene.sun.show = false
+  cesiumViewer.value.scene.moon.show = false
   cesiumViewer.value.scene.skyBox.show = false
   cesiumViewer.value.scene.sun.show = false
   cesiumViewer.value.scene.moon.show = false
