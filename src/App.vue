@@ -56,7 +56,8 @@ const initCesium = () => {
   cesiumViewer.value = new Cesium.Viewer('cesiumContainer', {
     // 使用高德地图作为底图
     imageryProvider: amapImageryProvider,
-    terrainProvider: Cesium.createWorldTerrain(),
+    // 移除地形，避免兼容问题
+    terrain: undefined,
     animation: true,
     timeline: true,
     baseLayerPicker: false,  // 隐藏底图选择器
