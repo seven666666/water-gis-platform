@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "vue": "^3.4.0",
-    "cesium": "^1.104.0",
+    "cesium": "^1.100.0",
     "three": "^0.160.0",
     "echarts": "^5.4.0"
   },

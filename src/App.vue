@@ -48,48 +48,25 @@ const initCesium = () => {
   statusText.value = '加载中...'
   
   try {
-    // 使用高德地图底图（无需Cesium Token）
+    // 使用高德地图底图
     const amapImageryProvider = new Cesium.UrlTemplateImageryProvider({
       url: 'https://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
       credit: '高德地图'
     })
     
-    // 创建Viewer，禁用所有可能触发 Ion 的功能
+    // 创建Viewer
     cesiumViewer.value = new Cesium.Viewer('cesiumContainer', {
       imageryProvider: amapImageryProvider,
       baseLayerPicker: false,
       geocoder: false,
-      homeButton: false,
-      sceneModePicker: false,
+      homeButton: true,
+      sceneModePicker: true,
       navigationHelpButton: false,
       animation: false,
       timeline: false,
       infoBox: false,
-      selectionIndicator: false,
-      fullscreenButton: false,
-      vrButton: false,
-      skyBox: false,
-      skyAtmosphere: false,
-      shouldAnimate: false
+      selectionIndicator: false
     })
-    
-    // 安全禁用 Ion 相关功能
-    const scene = cesiumViewer.value.scene
-    if (scene) {
-      if (scene.globe) {
-        scene.globe.showGroundAtmosphere = false
-        scene.globe.enableLighting = false
-        scene.globe.depthTestAgainstTerrain = false
-      }
-      if (scene.skyBox) scene.skyBox.show = false
-      if (scene.sun) scene.sun.show = false
-      if (scene.moon) scene.moon.show = false
-      // 禁用时间相关
-      scene.requestRenderMode = true
-    }
-    
-    // 移除数据源加载（可能触发 Ion）
-    cesiumViewer.value.dataSources.removeAll()
     
     // 飞向中国区域
     cesiumViewer.value.camera.flyTo({
