@@ -47,27 +47,26 @@ const initCesium = () => {
   status.value = 'loading'
   statusText.value = '加载中...'
   
-  // 不再需要 Cesium Token，使用高德地图底图
+  // 使用高德地图底图（无需Cesium Token）
+  const amapImageryProvider = new Cesium.UrlTemplateImageryProvider({
+    url: 'https://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+    credit: '高德地图'
+  })
+  
   cesiumViewer.value = new Cesium.Viewer('cesiumContainer', {
+    // 使用高德地图作为底图
+    imageryProvider: amapImageryProvider,
     terrainProvider: Cesium.createWorldTerrain(),
     animation: true,
     timeline: true,
-    baseLayerPicker: true,
-    geocoder: true,
+    baseLayerPicker: false,  // 隐藏底图选择器
+    geocoder: false,
     homeButton: true,
     sceneModePicker: true,
-    navigationHelpButton: true,
-    // 禁用默认底图
-    imageryProvider: false,
-    baseLayer: false
+    navigationHelpButton: false,
+    infoBox: false,
+    selectionIndicator: false
   })
-  
-  // 添加高德地图底图（国内可访问，无需token）
-  const amapImageryProvider = new Cesium.UrlTemplateImageryProvider({
-    url: 'https://webst0{1-4}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
-    credit: '高德地图'
-  })
-  cesiumViewer.value.imageryLayers.addImageryProvider(amapImageryProvider)
   
   // 飞向中国区域
   cesiumViewer.value.camera.flyTo({
