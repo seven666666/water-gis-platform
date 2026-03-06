@@ -49,7 +49,7 @@ const initCesium = () => {
   
   try {
     // 配置 Cesium Ion Token
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlNzU2NTdlOS00ODUzLTRiOGQtYmIxZi02OGE0NDkzNzViYmIiLCJpZCI6MTAzMTU5LCJpYXQiOjE2NTkzMTg3OTR9.WszZb_zTVRhyUwHcbV60dqLKQYDgSOIAFCxsnD2sFPk'
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmMTUyNTcwOS1iODVkLTRmNGUtYWRiZC02M2MyNTI5OGFhYzkiLCJpZCI6Mzk3OTY4LCJpYXQiOjE3NzI3NzY0MjJ9.dUaI8lhI6AQRROR0_uC5j9kZtcTWCGhcYbX2mvW8iwE'
     
     // 使用高德地图底图
     const amapImageryProvider = new Cesium.UrlTemplateImageryProvider({
