@@ -48,15 +48,8 @@ const initCesium = () => {
   statusText.value = '加载中...'
   
   try {
-    // 完全禁用 Cesium Ion，防止它尝试加载远程资源
-    Cesium.Ion.defaultAccessToken = 'disable'
-    Cesium.Ion.loadVault = undefined
-    Cesium.Ion.createWorldTerrain = undefined
-    
-    // 覆盖 ApproximateTerrainHeights 防止加载
-    if (Cesium.ApproximateTerrainHeights) {
-      Cesium.ApproximateTerrainHeights.initialize = () => Promise.resolve()
-    }
+    // 配置 Cesium Ion Token
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlNzU2NTdlOS00ODUzLTRiOGQtYmIxZi02OGE0NDkzNzViYmIiLCJpZCI6MTAzMTU5LCJpYXQiOjE2NTkzMTg3OTR9.WszZb_zTVRhyUwHcbV60dqLKQYDgSOIAFCxsnD2sFPk'
     
     // 使用高德地图底图
     const amapImageryProvider = new Cesium.UrlTemplateImageryProvider({
@@ -67,26 +60,16 @@ const initCesium = () => {
     // 创建Viewer
     cesiumViewer.value = new Cesium.Viewer('cesiumContainer', {
       imageryProvider: amapImageryProvider,
-      baseLayerPicker: false,
-      geocoder: false,
-      homeButton: false,
-      sceneModePicker: false,
-      navigationHelpButton: false,
-      animation: false,
-      timeline: false,
-      infoBox: false,
-      selectionIndicator: false,
-      skyBox: false,
-      skyAtmosphere: false
+      baseLayerPicker: true,
+      geocoder: true,
+      homeButton: true,
+      sceneModePicker: true,
+      navigationHelpButton: true,
+      animation: true,
+      timeline: true,
+      infoBox: true,
+      selectionIndicator: true
     })
-    
-    // 进一步禁用 Ion 资源
-    const scene = cesiumViewer.value.scene
-    scene.globe.depthTestAgainstTerrain = false
-    scene.globe.showGroundAtmosphere = false
-    scene.skyBox.show = false
-    scene.sun.show = false
-    scene.moon.show = false
     
     // 飞向中国区域
     cesiumViewer.value.camera.flyTo({
