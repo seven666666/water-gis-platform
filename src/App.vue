@@ -12,6 +12,7 @@
         <button @click="addReservoir">添加水库</button>
         <button @click="addRiver">添加河流</button>
         <button @click="toggleThree">Three.js效果</button>
+        <button @click="showScrollDemo = true" class="new-btn">滚动3D展示</button>
       </div>
     </div>
     <div class="data-panel" v-if="showData">
@@ -22,6 +23,9 @@
         <span class="unit">{{ item.unit }}</span>
       </div>
     </div>
+    
+    <!-- 滚动3D展示组件 -->
+    <ScrollShowcase v-if="showScrollDemo" />
   </div>
 </template>
 
@@ -29,10 +33,12 @@
 import { ref, onMounted } from 'vue'
 import * as Cesium from 'cesium'
 import * as THREE from 'three'
+import ScrollShowcase from './components/ScrollShowcase.vue'
 
 const status = ref('idle')
 const statusText = ref('未初始化')
 const showData = ref(false)
+const showScrollDemo = ref(false)
 const cesiumViewer = ref(null)
 const threeScene = ref(null)
 
@@ -203,6 +209,15 @@ onMounted(() => {
 
 .actions button:hover {
   background: #1565c0;
+}
+
+.actions button.new-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin-top: 10px;
+}
+
+.actions button.new-btn:hover {
+  background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
 }
 
 .data-panel {
