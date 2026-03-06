@@ -56,18 +56,31 @@ const initCesium = () => {
   cesiumViewer.value = new Cesium.Viewer('cesiumContainer', {
     // 使用高德地图作为底图
     imageryProvider: amapImageryProvider,
-    // 移除地形，避免兼容问题
-    terrain: undefined,
-    animation: true,
-    timeline: true,
-    baseLayerPicker: false,  // 隐藏底图选择器
+    // 禁用所有可能需要 Ion 的功能
+    terrain: false,
+    terrainProvider: undefined,
+    baseLayerPicker: false,
     geocoder: false,
-    homeButton: true,
-    sceneModePicker: true,
+    homeButton: false,
+    sceneModePicker: false,
     navigationHelpButton: false,
+    animation: false,
+    timeline: false,
     infoBox: false,
-    selectionIndicator: false
+    selectionIndicator: false,
+    fullscreenButton: false,
+    vrButton: false,
+    skyBox: false,
+    skyAtmosphere: false,
+    shouldAnimate: false
   })
+  
+  // 禁用场景的某些自动加载
+  cesiumViewer.value.scene.globe.showGroundAtmosphere = false
+  cesiumViewer.value.scene.globe.enableLighting = false
+  cesiumViewer.value.scene.skyBox.show = false
+  cesiumViewer.value.scene.sun.show = false
+  cesiumViewer.value.scene.moon.show = false
   
   // 飞向中国区域
   cesiumViewer.value.camera.flyTo({
