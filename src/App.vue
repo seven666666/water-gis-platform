@@ -47,52 +47,63 @@ const initCesium = () => {
   status.value = 'loading'
   statusText.value = '加载中...'
   
-  // 使用高德地图底图（无需Cesium Token）
-  const amapImageryProvider = new Cesium.UrlTemplateImageryProvider({
-    url: 'https://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
-    credit: '高德地图'
-  })
-  
-  cesiumViewer.value = new Cesium.Viewer('cesiumContainer', {
-    // 使用高德地图作为底图
-    imageryProvider: amapImageryProvider,
-    // 移除 terrain 配置以兼容 cesium 1.104
-    baseLayerPicker: false,
-    geocoder: false,
-    homeButton: false,
-    sceneModePicker: false,
-    navigationHelpButton: false,
-    animation: false,
-    timeline: false,
-    infoBox: false,
-    selectionIndicator: false,
-    fullscreenButton: false,
-    vrButton: false,
-    skyBox: false,
-    skyAtmosphere: false,
-    shouldAnimate: false
-  })
-  
-  // 禁用 globe 的所有 Ion 服务
-  const globe = cesiumViewer.value.scene.globe
-  globe.showGroundAtmosphere = false
-  globe.enableLighting = false
-  globe.depthTestAgainstTerrain = false
-  cesiumViewer.value.scene.skyBox.show = false
-  cesiumViewer.value.scene.sun.show = false
-  cesiumViewer.value.scene.moon.show = false
-  cesiumViewer.value.scene.skyBox.show = false
-  cesiumViewer.value.scene.sun.show = false
-  cesiumViewer.value.scene.moon.show = false
-  
-  // 飞向中国区域
-  cesiumViewer.value.camera.flyTo({
-    destination: Cesium.Cartesian3.fromDegrees(116.4, 39.9, 500000)
-  })
-  
-  status.value = 'ready'
-  statusText.value = '已就绪'
-  showData.value = true
+  try {
+    // 使用高德地图底图（无需Cesium Token）
+    const amapImageryProvider = new Cesium.UrlTemplateImageryProvider({
+      url: 'https://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+      credit: '高德地图'
+    })
+    
+    // 创建Viewer，禁用所有可能触发 Ion 的功能
+    cesiumViewer.value = new Cesium.Viewer('cesiumContainer', {
+      imageryProvider: amapImageryProvider,
+      baseLayerPicker: false,
+      geocoder: false,
+      homeButton: false,
+      sceneModePicker: false,
+      navigationHelpButton: false,
+      animation: false,
+      timeline: false,
+      infoBox: false,
+      selectionIndicator: false,
+      fullscreenButton: false,
+      vrButton: false,
+      skyBox: false,
+      skyAtmosphere: false,
+      shouldAnimate: false
+    })
+    
+    // 安全禁用 Ion 相关功能
+    const scene = cesiumViewer.value.scene
+    if (scene) {
+      if (scene.globe) {
+        scene.globe.showGroundAtmosphere = false
+        scene.globe.enableLighting = false
+        scene.globe.depthTestAgainstTerrain = false
+      }
+      if (scene.skyBox) scene.skyBox.show = false
+      if (scene.sun) scene.sun.show = false
+      if (scene.moon) scene.moon.show = false
+      // 禁用时间相关
+      scene.requestRenderMode = true
+    }
+    
+    // 移除数据源加载（可能触发 Ion）
+    cesiumViewer.value.dataSources.removeAll()
+    
+    // 飞向中国区域
+    cesiumViewer.value.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(116.4, 39.9, 500000)
+    })
+    
+    status.value = 'ready'
+    statusText.value = '已就绪'
+    showData.value = true
+  } catch (e) {
+    console.error('地图初始化失败:', e)
+    status.value = 'error'
+    statusText.value = '加载失败: ' + e.message
+  }
 }
 
 const addReservoir = () => {
