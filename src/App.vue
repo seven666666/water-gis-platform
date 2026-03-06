@@ -47,9 +47,7 @@ const initCesium = () => {
   status.value = 'loading'
   statusText.value = '加载中...'
   
-  // 配置 Cesium Token（生产环境需要申请）
-  Cesium.Ion.defaultAccessToken = 'your-cesium-token-here'
-  
+  // 不再需要 Cesium Token，使用高德地图底图
   cesiumViewer.value = new Cesium.Viewer('cesiumContainer', {
     terrainProvider: Cesium.createWorldTerrain(),
     animation: true,
@@ -58,8 +56,18 @@ const initCesium = () => {
     geocoder: true,
     homeButton: true,
     sceneModePicker: true,
-    navigationHelpButton: true
+    navigationHelpButton: true,
+    // 禁用默认底图
+    imageryProvider: false,
+    baseLayer: false
   })
+  
+  // 添加高德地图底图（国内可访问，无需token）
+  const amapImageryProvider = new Cesium.UrlTemplateImageryProvider({
+    url: 'https://webst0{1-4}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',
+    credit: '高德地图'
+  })
+  cesiumViewer.value.imageryLayers.addImageryProvider(amapImageryProvider)
   
   // 飞向中国区域
   cesiumViewer.value.camera.flyTo({
