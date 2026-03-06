@@ -3,41 +3,22 @@
 ## 项目概述
 - 目标：基于 Cesium + Three.js 的水库河流监测可视化系统
 - 技术栈：Vue 3 + Vite + Cesium + Three.js + ECharts
+- **无需 Cesium Token**，使用高德地图底图
 
-## 功能模块
-1. 地图基础展示
-2. 水库/河流数据可视化
-3. 实时监测数据展示
-4. 三维动态效果
+## 🚀 快速开始
 
-## 开发日志
+```bash
+npm install
+npm run dev
+```
 
-### 2026-03-05 (Day 1)
-- [ ] 项目初始化
-- [ ] 基础框架搭建
-- [ ] Cesium 地图集成
-- [ ] Three.js 环境集成
+## ⚠️ Cesium 配置注意
 
----
+本项目使用**高德地图**替代 Cesium Ion，无需 Token。
 
-## 操作记录
+如果遇到错误，检查：
+1. 不要使用 `Cesium.createWorldTerrain()` (Cesium 1.104+ 已移除)
+2. 不要设置 `terrain: false` (会报错)
+3. 需禁用 Ion 相关功能：skyBox, skyAtmosphere, 大气层等
 
-### Step 1: 项目初始化
-- 创建项目目录
-- 初始化 package.json
-- 安装依赖
-
-### Step 2: 基础框架
-- Vue 3 + Vite 配置
-- Cesium 集成
-- Three.js 集成
-
-### Step 3: 地图功能
-- 地图加载
-- 水库标记
-- 河流绘制
-
-### Step 4: 可视化
-- 数据面板
-- ECharts 图表集成
-- 实时数据模拟
+详见 `memory/cesium-amap-config.md
